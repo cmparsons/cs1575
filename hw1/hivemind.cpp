@@ -19,23 +19,38 @@ const int NOT_ISOLATED_MIN = 2;
 * @pre: num_rows and num_cols are > 0
 * @post: memory is allocated for num_rows x num_cols 2D array
 */
-int ** allocate_grid(int **grid, const int num_rows, const int num_cols);
+int ** allocate_grid(const int num_rows, const int num_cols);
+
+/*
+* @description: insert data into a 2d array
+* @pre: num_rows and num_cols > 0
+* @post: data is set in each member of the 2D array
+*/
+void insert_grid_data(int **grid, const int num_rows, const int num_cols);
+
+/*
+* @description: count number of robots experiencing RAD
+* @pre: num_rows and num_cols > 0
+*       grid should have meaningful data
+* @post: returns number of robots experiencing RAD in the passed grid
+*/
+int count_rad_robots(int **const grid, const int num_rows, const int num_cols);
 
 /*
 * @description: dellocates memory of a 2D array
 * @pre: num_rows > 0
 * @post: memory of a num_rows x num_cols 2D array is deallocated
 */
-int ** deallocate_grid(int **grid, const int num_rows);
+void deallocate_grid(int ** grid, const int num_rows);
 
 /*
 * @description: finds number of robots surrounding passed point
-* @pre:
+* @pre: point_row, point_col, max_row, max_col should be greater than 0
 * @post: returns true if there are fewer than 2 robots within radius. Otherwise,
 *        returns false
 */
 bool is_isolated(
-  int **grid,
+  int **const grid,
   const int point_row,
   const int point_col,
   const int max_row,
@@ -56,7 +71,6 @@ int main()
   int num_rows = 0;
   int num_columns = 0;
   int **grid = NULL;
-  int radius = 0; // robot's signal strength
   int num_rad_robots = 0; // number of isolated hive members
 
   cin >> num_test_cases;
@@ -66,60 +80,34 @@ int main()
     num_rad_robots = 0;
     cin >> num_rows >> num_columns;
 
-    // Allocate memory for grid
-    grid = allocate_grid(grid, num_rows, num_columns);
+    grid = allocate_grid(num_rows, num_columns);
 
-    // Place data into grid
-    for (int j = 0; j < num_rows; j++)
-    {
-      for (int k = 0; k < num_columns; k++)
-      {
-        cin >> grid[j][k];
-      }
-    }
+    insert_grid_data(grid, num_rows, num_columns);
 
-    // Count number of robots experiencing symptoms of RAD
-    for (int j = 0; j < num_rows; j++)
-    {
-      for (int k = 0; k < num_columns; k++)
-      {
-        radius = grid[j][k];
-        if (radius != 0)
-        {
-          if (is_isolated(grid, j, k, num_rows, num_columns, radius))
-          {
-            num_rad_robots++;
-          }
-        }
-      }
-    }
+    num_rad_robots = count_rad_robots(grid, num_rows, num_columns);
 
     // Print results
     cout << "Hive mind " << i + 1 << " has " << num_rad_robots
          << " isolated members." << endl;
 
-    // Deallocate memory from grid
-    grid = deallocate_grid(grid, num_rows);
+    deallocate_grid(grid, num_rows);
   }
 
   return 0;
 }
 
-int ** allocate_grid(int ** grid, const int num_rows, const int num_cols)
+int ** allocate_grid(const int num_rows, const int num_cols)
 {
+  int **grid = new int *[num_rows];
   for (int i = 0; i < num_rows; i++)
   {
-    grid = new int *[num_rows];
-    for (int j = 0; j < num_rows; j++)
-    {
-      grid[j] = new int[num_cols];
-    }
+    grid[i] = new int[num_cols];
   }
 
   return grid;
 }
 
-int ** deallocate_grid(int **grid, const int num_rows)
+void deallocate_grid(int ** grid, const int num_rows)
 {
   for (int i = 0; i < num_rows; i++)
   {
@@ -128,11 +116,47 @@ int ** deallocate_grid(int **grid, const int num_rows)
   delete[] grid;
   grid = NULL;
 
-  return grid;
+  return;
+}
+
+void insert_grid_data(int **grid, const int num_rows, const int num_cols)
+{
+  for (int i = 0; i < num_rows; i++)
+  {
+    for (int j = 0; j < num_cols; j++)
+    {
+      cin >> grid[i][j];
+    }
+  }
+
+  return;
+}
+
+int count_rad_robots(int **const grid, const int num_rows, const int num_cols)
+{
+  int num_rad_robots = 0;
+  int radius = 0; // robot's signal strength
+
+  for (int i = 0; i < num_rows; i++)
+  {
+    for (int j = 0; j < num_cols; j++)
+    {
+      radius = grid[i][j];
+      if (radius != 0)
+      {
+        if (is_isolated(grid, i, j, num_rows, num_cols, radius))
+        {
+          num_rad_robots++;
+        }
+      }
+    }
+  }
+
+  return num_rad_robots;
 }
 
 bool is_isolated(
-  int **grid,
+  int **const grid,
   const int point_row,
   const int point_col,
   const int max_row,
