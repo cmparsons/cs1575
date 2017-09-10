@@ -14,41 +14,31 @@ using namespace std;
 // minimum number of robots to be considered "not isolated"
 const int NOT_ISOLATED_MIN = 2;
 
-/*
-* @description: allocates memory for a 2D array
-* @pre: num_rows and num_cols are > 0
-* @post: memory is allocated for num_rows x num_cols 2D array
-*/
+// Description: Allocates memory for a 2D array
+// pre:         num_rows > 0 and num_cols > 0
+// post:        A num_rows-by-num_cols 2D array with memory allocated is returned
 int ** allocate_grid(const int num_rows, const int num_cols);
 
-/*
-* @description: insert data into a 2d array
-* @pre: num_rows and num_cols > 0
-* @post: data is set in each member of the 2D array
-*/
+// Description: Insert data into a 2D array
+// pre:         Memory is allocated for grid with dimensions num_rows-by-num_cols
+// post:        Data is set for each member of passed 2D array
 void insert_grid_data(int **grid, const int num_rows, const int num_cols);
 
-/*
-* @description: count number of robots experiencing RAD
-* @pre: num_rows and num_cols > 0
-*       grid should have meaningful data
-* @post: returns number of robots experiencing RAD in the passed grid
-*/
+// Description: Count number of robots experiecning RAD in passed grid
+// pre:         Memory is allocated for grid with dimensions num_rows-by-num_cols
+// post:        Number of robots experiencing RAD is returned
 int count_rad_robots(int **const grid, const int num_rows, const int num_cols);
 
-/*
-* @description: dellocates memory of a 2D array
-* @pre: num_rows > 0
-* @post: memory of a num_rows x num_cols 2D array is deallocated
-*/
+// Description: Deallocates memory for a 2D array
+// pre:         2D array has row count of num_rows in memory
+// post:        Memory is deallocated for 2D array
 void deallocate_grid(int ** grid, const int num_rows);
 
-/*
-* @description: finds number of robots surrounding passed point
-* @pre: point_row, point_col, max_row, max_col should be greater than 0
-* @post: returns true if there are fewer than 2 robots within radius. Otherwise,
-*        returns false
-*/
+// Description: Checks if passed point within grid is a robot experiencing RAD
+// pre:         Memory is allocated for a max_row-by-max_col 2D array
+//              point_row, point_col maps to a location in memory within 2D array
+// post:        Returns true if passed point represents isolated member in grid.
+//              Otherwise, returns false.
 bool is_isolated(
   int **const grid,
   const int point_row,
@@ -58,11 +48,9 @@ bool is_isolated(
   const int radius
 );
 
-/*
-* @description: calculate distance between two points
-* @pre: none
-* @post: the distance between (x_1, y_2) and (x_2, y_2) is returned
-*/
+// Description: Calculate distance between two points
+// pre:         None
+// post:        Distance between (x_1, y_1) and (x_2, y_2) is returned
 double get_distance(const int x_1, const int y_1, const int x_2, const int y_2);
 
 int main()
