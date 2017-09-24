@@ -1,3 +1,9 @@
+/*
+* @author: Christian Parsons
+* @file: constants.h
+* @description: Files contains constants used for maze backtracking HW2.
+*/
+
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
