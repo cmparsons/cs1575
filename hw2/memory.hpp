@@ -32,7 +32,7 @@ void deallocate_2d_array(T **array, const int rows)
   for (int i = 0; i < rows; i++)
     delete[] array[i];
 
-  delete array;
+  delete[] array;
   array = NULL;
 
   return;
