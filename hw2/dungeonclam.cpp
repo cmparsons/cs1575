@@ -53,8 +53,7 @@ bool exit_dungeon(char **dungeon,
 // pre:         num_rows > 0
 //              num_cols > 0
 //              num_rows and num_cols point to allocated memory for dungeon
-// post:        Removes all ACCESSED characters in dungeon and leaves only
-//              CRUMB characters.
+// post:        Removes all ACCESSED characters in dungeon
 void show_path(char **dungeon, const int num_rows, const int num_cols);
 
 int main()
@@ -153,7 +152,7 @@ bool exit_dungeon(char **dungeon,
     return true;
   }
 
-  return false; // No possible movies -- backtrack
+  return false; // No possible moves -- backtrack
 }
 
 void get_dungeon_data(char **dungeon, const int num_rows, const int num_cols)
