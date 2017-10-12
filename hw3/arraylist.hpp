@@ -15,9 +15,7 @@ using namespace std;
 template <class T>
 ArrayList<T>::~ArrayList()
 {
-  m_size = m_max = 0;
-  delete[] m_data;
-  m_data = NULL;
+  clear();
 }
 
 template <class T>
@@ -61,11 +59,12 @@ ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& rhs)
 template <class T>
 ArrayList<T>::ArrayList(const ArrayList<T>& cpy)
 {
+  // shallow copy for non-pointers
   m_size = cpy.m_size;
   m_max = cpy.m_max;
   m_errobj = cpy.m_errobj;
 
-
+  // deep copy for pointer if non-null
   if (cpy.m_data)
   {
     m_data = new T[m_size];
@@ -75,6 +74,57 @@ ArrayList<T>::ArrayList(const ArrayList<T>& cpy)
   }
   else
     m_data = 0;
+}
+
+// MARK: Basic Accessor Operations
+template <class T>
+int ArrayList<T>::size() const
+{
+  return m_size;
+}
+
+template <class T>
+const T& ArrayList<T>::first() const
+{
+  if (m_size == 0)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST.first()!!  (List is empty)" << endl;
+    return m_errobj;
+  }
+
+  return m_data[0];
+}
+
+template <class T>
+const T& ArrayList<T>::operator[](int i) const
+{
+  if (i < 0 || i > m_size || i > m_max)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (index out of bounds)"
+         << endl;
+    return m_errobj;
+  }
+
+  return m_data[i];
+}
+
+template <class T>
+int ArrayList<T>::find(const T& x) const
+{
+  for (int i = 0; i < m_size; i++)
+    if (m_data[i] == x)
+      return i;
+
+  return -1;
+}
+
+// MARK: Basic Mutator Operations
+template <class T>
+void ArrayList<T>::clear()
+{
+  m_size = m_max = 0;
+  delete[] m_data;
+  m_data = NULL;
 }
 
 #endif
