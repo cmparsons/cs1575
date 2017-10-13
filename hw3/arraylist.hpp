@@ -123,9 +123,22 @@ const T& ArrayList<T>::first() const
 }
 
 template <class T>
+T& ArrayList<T>::operator[](int i)
+{
+  if (i < 0 || i >= m_size)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (index out of bounds)"
+         << endl;
+    return m_errobj;
+  }
+
+  return m_data[i];
+}
+
+template <class T>
 const T& ArrayList<T>::operator[](int i) const
 {
-  if (i < 0 || i > m_size || i > m_max)
+  if (i < 0 || i >= m_size)
   {
     cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (index out of bounds)"
          << endl;
@@ -219,6 +232,58 @@ void ArrayList<T>::remove(int i)
 
   if (m_size < 0.25 * m_max)
     shrink();
+
+  return;
+}
+
+// MARK: Complex Mutator Operations
+template <class T>
+void ArrayList<T>::swap(int i, int k)
+{
+  if (i < 0 || k < 0 || i >= m_size || k >= m_size)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST!!.swap()  (index out of bounds)"
+         << endl;
+    return;
+  }
+
+  T temp = m_data[i];
+  m_data[i] = m_data[k];
+  m_data[k] = temp;
+
+  return;
+}
+
+template <class T>
+void ArrayList<T>::append(const ArrayList<T>& alist)
+{
+  int new_length = m_size + alist.size();
+  T *new_list = new T[new_length];
+
+  for (int i = 0; i < m_size; i++)
+    new_list[i] = m_data[i];
+
+  for (int j = m_size; j < new_length; j++)
+    new_list[j] = alist[j - m_size];
+
+  m_max = m_size = new_length;
+  delete[] m_data;
+  m_data = new_list;
+
+  return;
+}
+
+template <class T>
+void ArrayList<T>::purge()
+{
+  T val;
+  for (int i = 0; i < m_size; i++)
+  {
+    val = m_data[i];
+    for (int j = i; j < m_size; j++)
+      if (m_data[j] == val)
+        remove(j);
+  }
 
   return;
 }
