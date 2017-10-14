@@ -296,7 +296,7 @@ void ArrayList<T>::purge()
   for (int i = 0; i < m_size; i++)
   {
     val = m_data[i];
-    for (int j = i; j < m_size; j++)
+    for (int j = i + 1; j < m_size; j++)
       if (m_data[j] == val)
         remove(j);
   }
