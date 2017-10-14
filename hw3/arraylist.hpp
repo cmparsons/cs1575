@@ -125,6 +125,11 @@ const T& ArrayList<T>::first() const
 template <class T>
 T& ArrayList<T>::operator[](int i)
 {
+  if (m_size == 0)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (List is empty)" << endl;
+    return m_errobj;
+  }
   if (i < 0 || i >= m_size)
   {
     cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (index out of bounds)"
@@ -138,6 +143,11 @@ T& ArrayList<T>::operator[](int i)
 template <class T>
 const T& ArrayList<T>::operator[](int i) const
 {
+  if (m_size == 0)
+  {
+    cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (List is empty)" << endl;
+    return m_errobj;
+  }
   if (i < 0 || i >= m_size)
   {
     cout << "!-- ERROR : PANIC in ARRAYLIST!!.[]  (index out of bounds)"
@@ -165,6 +175,8 @@ void ArrayList<T>::clear()
   m_size = m_max = 0;
   delete[] m_data;
   m_data = NULL;
+
+  return;
 }
 
 template <class T>
@@ -185,6 +197,10 @@ void ArrayList<T>::insert_back(const T& x)
 template <class T>
 void ArrayList<T>::insert(const T& x, int i)
 {
+  // Special case if list is not allocated
+  if (m_size == 0 && m_max == 0)
+    m_data = new T[++m_max];
+
   if (i < 0 || i >= m_size)
   {
     cout << "!-- ERROR : PANIC in ARRAYLIST!!.insert()  (index out of bounds)"
