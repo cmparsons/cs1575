@@ -241,7 +241,7 @@ void ArrayList<T>::remove(int i)
   if (i < m_size - 1)
   {
     // Shift elements left of i
-    for (int j = i; j < m_size; j++)
+    for (int j = i; j < m_size - 1; j++)
       m_data[j] = m_data[j + 1];
   }
   m_size--;
