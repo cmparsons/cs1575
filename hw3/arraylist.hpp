@@ -49,7 +49,7 @@ template <class T>
 ArrayList<T>::ArrayList(int s, const T& x)
 {
   m_size = m_max = s;
-  m_data = new T[m_size];
+  m_data = new T[m_max];
 
   for (int i = 0; i < m_size; i++)
     m_data[i] = x;
@@ -186,10 +186,10 @@ void ArrayList<T>::insert_back(const T& x)
   if (m_size == 0 && m_max == 0)
     m_data = new T[++m_max];
 
-  m_data[m_size++] = x;
-
-  if (m_size == m_max)
+  if (++m_size >= m_max)
     grow();
+
+  m_data[m_size - 1] = x;
 
   return;
 }
@@ -209,7 +209,7 @@ void ArrayList<T>::insert(const T& x, int i)
   }
 
   // Check before shifting to prevent accessing unallocated memory
-  if (++m_size == m_max)
+  if (++m_size >= m_max)
     grow();
 
   // Shift elements right of i
@@ -240,7 +240,7 @@ void ArrayList<T>::remove(int i)
   // Don't shift elements if removing from the end
   if (i < m_size - 1)
   {
-    // Shift elements left of i
+    // Shift elements located to the right of i
     for (int j = i; j < m_size - 1; j++)
       m_data[j] = m_data[j + 1];
   }
