@@ -3,7 +3,7 @@
  * @section: B
  * @due: October 23, 2017
  * @description: Functions for templated linked stack.
- * @file: linkedstack.h
+ * @file: linkedstack.hpp
  * Implementing A.D.T. Stack
  * @C - Galaxy Express Software
  *
