@@ -29,7 +29,7 @@ LinkedStack<T>::~LinkedStack()
 }
 
 template <class T>
-const LinkedStack<T>& LinkedStack<T>::operator= (const LinkedStack<T>& rhs)
+const LinkedStack<T> &LinkedStack<T>::operator=(const LinkedStack<T> &rhs)
 {
   // check for self-assignment
   if (this == &rhs)
@@ -39,7 +39,7 @@ const LinkedStack<T>& LinkedStack<T>::operator= (const LinkedStack<T>& rhs)
   m_size = rhs.m_size;
   m_head = new Node<T>();
   Node<T> *temp = rhs.m_head; // track location in rhs
-  Node<T> *temp2 = m_head; // track location in this
+  Node<T> *temp2 = m_head;    // track location in this
 
   // Deep copy stack
   while (temp != NULL)
@@ -57,12 +57,12 @@ const LinkedStack<T>& LinkedStack<T>::operator= (const LinkedStack<T>& rhs)
 }
 
 template <class T>
-LinkedStack<T>::LinkedStack(const LinkedStack<T>& rhs)
+LinkedStack<T>::LinkedStack(const LinkedStack<T> &rhs)
 {
   m_size = rhs.m_size;
   m_head = new Node<T>();
   Node<T> *temp = rhs.m_head; // track location in rhs
-  Node<T> *temp2 = m_head; // track location in this
+  Node<T> *temp2 = m_head;    // track location in this
 
   // Deep copy stack
   while (temp != NULL)
@@ -85,17 +85,17 @@ bool LinkedStack<T>::isEmpty() const
 }
 
 template <class T>
-const T& LinkedStack<T>::top() const throw ( Oops )
+const T &LinkedStack<T>::top() const throw(Oops)
 {
   if (isEmpty())
-     throw Oops("Stack is empty!");
+    throw Oops("Stack is empty!");
 
-   return m_head->m_data;
+  return m_head->m_data;
 }
 
- // MARK: Basic Mutator Operations
+// MARK: Basic Mutator Operations
 template <class T>
-void LinkedStack<T>::push(const T& x)
+void LinkedStack<T>::push(const T &x)
 {
   m_head = new Node<T>(x, m_head);
   m_size++;

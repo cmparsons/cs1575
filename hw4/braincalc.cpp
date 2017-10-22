@@ -27,7 +27,7 @@ int main()
 
   int operand1, operand2, result;
   int count = 1; // Count iterations for ouput
-  string op; // operator
+  string op;     // operator
   bool valid_exp = true;
 
   string expression, input;
@@ -65,7 +65,6 @@ int main()
 
             op = operators.top();
             operators.pop();
-
           }
           catch (const Oops &e)
           {
@@ -103,7 +102,8 @@ int main()
     if (valid_exp && parenthesis.isEmpty() && operators.isEmpty())
       cout << "#" << count << " : " << result << endl;
     else
-      cout << "#" << count << " : " << "INVALID!" << endl;
+      cout << "#" << count << " : "
+           << "INVALID!" << endl;
 
     // Reinitialize for next expression
     parenthesis.clear();
