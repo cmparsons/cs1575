@@ -5,7 +5,7 @@
  *
  * @due: November 8, 2017
  *
- * @description: Implementation of tempated binary search tree class.
+ * @description: Member functions of templated binary search tree.
  *
  * @file: mybstree.hpp
  *
@@ -22,6 +22,31 @@ using namespace std;
 
 const string SPACES = "    ";
 const string EMPTY_ERR = "OOPS ! : Tree is Empty !!";
+
+template <class T>
+int MyBSTree<T>::find_helper(TreeNode<T> *node, const T &value, int level) const
+{
+  if (node == NULL) // Did not find value
+    return (-1 * level);
+  else if (value > node->m_data)
+    return find_helper(node->m_right, value, level + 1);
+  else if (value < node->m_data)
+    return find_helper(node->m_left, value, level + 1);
+
+  return level; // Found value
+}
+
+template <class T>
+int MyBSTree<T>::height_helper(TreeNode<T> *node) const
+{
+  if (node == NULL)
+    return 0;
+
+  int left_height = height_helper(node->m_left);
+  int right_height = height_helper(node->m_right);
+
+  return (left_height > right_height ? left_height + 1 : right_height + 1);
+}
 
 template <class T>
 const T &MyBSTree<T>::get_min_helper(TreeNode<T> *node) const
@@ -83,6 +108,7 @@ void MyBSTree<T>::print_helper(TreeNode<T> *node, string indent) const
     return;
   }
 
+  // Backwards In-Order Traversal
   print_helper(node->m_right, indent + SPACES);
   cout << indent << node->m_data << endl;
   print_helper(node->m_left, indent + SPACES);

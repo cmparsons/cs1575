@@ -5,13 +5,13 @@
  *
  * @due: November 8, 2017
  *
- * @description: Definition of templated binary search tree class.
+ * @description: Implementation of templated binary search tree ADT.
  *
  * @file: mybstree.h
  *
  * @C - Galaxy Express Software
  *
- * Version 17.3.1
+ * Version 17.3.0
  */
 
 #ifndef MYBSTREE_H
@@ -49,10 +49,14 @@ private:
 
   void print_postorder_helper(TreeNode<T> *node) const;
 
-  void insert_helper(TreeNode<T> * &node, const T &value);
+  void insert_helper(TreeNode<T> *&node, const T &value);
+
+  int height_helper(TreeNode<T> *node) const;
+
+  int find_helper(TreeNode<T> *node, const T &value, int level) const;
 
 public:
-  MyBSTree(): m_size(0), m_root(NULL) {}
+  MyBSTree() : m_size(0), m_root(NULL) {}
 
   ~MyBSTree() { clear(); }
 
@@ -60,9 +64,13 @@ public:
 
   bool isEmpty() const { return m_size == 0 && m_root == NULL; }
 
+  int height() const { return height_helper(m_root); }
+
   const T &getMax() const throw(Oops);
 
   const T &getMin() const throw(Oops);
+
+  int find(const T &value) const { return find_helper(m_root, value, 1); }
 
   void clear();
 
