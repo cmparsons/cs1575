@@ -21,9 +21,28 @@
 using namespace std;
 
 const string SPACES = "    ";
+const string EMPTY_ERR = "OOPS ! : Tree is Empty !!";
 
 template <class T>
-void MyBSTree<T>::insert_helper(TreeNode<T> * &node, const T &value)
+const T &MyBSTree<T>::get_min_helper(TreeNode<T> *node) const
+{
+  if (node->m_left == NULL)
+    return node->m_data;
+
+  return get_min_helper(node->m_left);
+}
+
+template <class T>
+const T &MyBSTree<T>::get_max_helper(TreeNode<T> *node) const
+{
+  if (node->m_right == NULL)
+    return node->m_data;
+
+  return get_max_helper(node->m_right);
+}
+
+template <class T>
+void MyBSTree<T>::insert_helper(TreeNode<T> *&node, const T &value)
 {
   if (node == NULL)
   {
@@ -95,6 +114,24 @@ void MyBSTree<T>::print_postorder_helper(TreeNode<T> *node) const
   }
 
   return;
+}
+
+template <class T>
+const T &MyBSTree<T>::getMax() const throw(Oops)
+{
+  if (isEmpty())
+    throw Oops(EMPTY_ERR);
+
+  return get_max_helper(m_root);
+}
+
+template <class T>
+const T &MyBSTree<T>::getMin() const throw(Oops)
+{
+  if (isEmpty())
+    throw Oops(EMPTY_ERR);
+
+  return get_min_helper(m_root);
 }
 
 template <class T>

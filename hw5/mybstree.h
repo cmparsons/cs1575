@@ -41,6 +41,10 @@ private:
 
   void print_helper(TreeNode<T> *node, string indent) const;
 
+  const T &get_min_helper(TreeNode<T> *node) const;
+
+  const T &get_max_helper(TreeNode<T> *node) const;
+
   void print_preorder_helper(TreeNode<T> *node) const;
 
   void print_postorder_helper(TreeNode<T> *node) const;
@@ -51,6 +55,14 @@ public:
   MyBSTree(): m_size(0), m_root(NULL) {}
 
   ~MyBSTree() { clear(); }
+
+  int size() const { return m_size; }
+
+  bool isEmpty() const { return m_size == 0 && m_root == NULL; }
+
+  const T &getMax() const throw(Oops);
+
+  const T &getMin() const throw(Oops);
 
   void clear();
 
