@@ -37,22 +37,32 @@ private:
   TreeNode<T> *m_root;
   int m_size;
 
+  // Recursive helper to clear BST.
   void clear_helper(TreeNode<T> *node);
 
+  // Recursive helper to print BST structure using backwards in-order traversal.
   void print_helper(TreeNode<T> *node, string indent) const;
 
+  // Recursive helper to find minimum value in BST.
   const T &get_min_helper(TreeNode<T> *node) const;
 
+  // Recursive helper to find maximum value in BST.
   const T &get_max_helper(TreeNode<T> *node) const;
 
+  // Recurisve helper to print BST using a pre-order traversal.
   void print_preorder_helper(TreeNode<T> *node) const;
 
+  // Recursive helper to print BST using a post-order traversal.
   void print_postorder_helper(TreeNode<T> *node) const;
 
+  // Recursive helper to insert a value into the BST if it DNE already.
   void insert_helper(TreeNode<T> *&node, const T &value);
 
+  // Recursive helper to find the height of the BST.
   int height_helper(TreeNode<T> *node) const;
 
+  // Recursive helper to find a value in the BST.
+  // Returns level of value N or -N if value DNE in BST.
   int find_helper(TreeNode<T> *node, const T &value, int level) const;
 
 public:
