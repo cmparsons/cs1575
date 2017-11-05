@@ -24,6 +24,35 @@ const string SPACES = "    ";
 const string EMPTY_ERR = "OOPS ! : Tree is Empty !!";
 
 template <class T>
+const MyBSTree<T> &MyBSTree<T>::operator=(const MyBSTree<T> &rhs)
+{
+  if (this != &rhs)
+  {
+    clear();
+    m_size = rhs.m_size;
+    m_root = clone(rhs.m_root);
+  }
+
+  return *this;
+}
+
+template <class T>
+MyBSTree<T>::MyBSTree(const MyBSTree<T> &rhs)
+{
+  m_size = rhs.m_size;
+  m_root = clone(rhs.m_root);
+}
+
+template <class T>
+TreeNode<T> *MyBSTree<T>::clone(const TreeNode<T> *t)
+{
+  if (t == NULL)
+    return NULL;
+
+  return new TreeNode<T>(t->m_data, clone(t->m_left), clone(t->m_right));
+}
+
+template <class T>
 int MyBSTree<T>::find_helper(TreeNode<T> *node, const T &value, int level) const
 {
   if (node == NULL) // Did not find value

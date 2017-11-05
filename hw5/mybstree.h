@@ -27,7 +27,8 @@ public:
   TreeNode *m_right;
   TreeNode *m_left;
 
-  TreeNode(const T &value) : m_data(value), m_right(NULL), m_left(NULL) {}
+  TreeNode(const T &value, TreeNode<T> *left = NULL, TreeNode<T> *right = NULL)
+      : m_data(value), m_left(left), m_right(right) {}
 };
 
 template <class T>
@@ -65,8 +66,15 @@ private:
   // Returns level of value N or -N if value DNE in BST.
   int find_helper(TreeNode<T> *node, const T &value, int level) const;
 
+  // Recursive helper to copy a tree.
+  TreeNode<T> *clone(const TreeNode<T> *t);
+
 public:
   MyBSTree() : m_size(0), m_root(NULL) {}
+
+  MyBSTree(const MyBSTree<T> &rhs);
+
+  const MyBSTree<T> &operator=(const MyBSTree<T> &rhs);
 
   ~MyBSTree() { clear(); }
 
