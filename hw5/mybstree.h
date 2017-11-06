@@ -45,7 +45,7 @@ private:
   void print_helper(TreeNode<T> *node, string indent) const;
 
   // Recursive helper to find minimum value in BST.
-  const T &get_min_helper(TreeNode<T> *node) const;
+  TreeNode<T> *get_min_helper(TreeNode<T> *node) const;
 
   // Recursive helper to find maximum value in BST.
   const T &get_max_helper(TreeNode<T> *node) const;
@@ -58,6 +58,10 @@ private:
 
   // Recursive helper to insert a value into the BST if it DNE already.
   void insert_helper(TreeNode<T> *&node, const T &value);
+
+  // Recursive helepr to remove a value from the BST, if it exists.
+  // Return the new subtree.
+  TreeNode<T> *remove_helper(TreeNode<T> *root, const T &value);
 
   // Recursive helper to find the height of the BST.
   int height_helper(TreeNode<T> *node) const;
@@ -93,6 +97,8 @@ public:
   void clear();
 
   void insert(const T &value);
+
+  void remove(const T &value);
 
   void print() const { print_helper(m_root, ""); }
 

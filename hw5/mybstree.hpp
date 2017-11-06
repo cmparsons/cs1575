@@ -78,10 +78,10 @@ int MyBSTree<T>::height_helper(TreeNode<T> *node) const
 }
 
 template <class T>
-const T &MyBSTree<T>::get_min_helper(TreeNode<T> *node) const
+TreeNode<T> *MyBSTree<T>::get_min_helper(TreeNode<T> *node) const
 {
   if (node->m_left == NULL)
-    return node->m_data;
+    return node;
 
   return get_min_helper(node->m_left);
 }
@@ -114,6 +114,44 @@ void MyBSTree<T>::insert_helper(TreeNode<T> *&node, const T &value)
 
   return;
 }
+
+template <class T>
+TreeNode<T>* MyBSTree<T>::remove_helper(TreeNode<T> *root, const T &value)
+{
+  if (root == NULL)
+    return root;
+
+  if (value < root->m_data)
+    root->m_left = remove_helper(root->m_left, value);
+
+  else if (value > root->m_data)
+    root->m_right = remove_helper(root->m_right, value);
+
+  else // Found value
+  {
+    if (root->m_left == NULL) // Only right child or no children
+    {
+      TreeNode<T> *temp = root->m_right;
+      delete root;
+      return temp;
+    }
+    else if (root->m_right == NULL) // Only left child
+    {
+      TreeNode<T> *temp = root->m_left;
+      delete root;
+      return temp;
+    }
+    else // Both children
+    {
+      TreeNode<T> *temp = get_min_helper(root->m_right);
+      root->m_data = temp->m_data;
+      root->m_right = remove_helper(root->m_right, temp->m_data);
+    }
+  }
+
+  return root;
+}
+
 
 template <class T>
 void MyBSTree<T>::clear_helper(TreeNode<T> *node)
@@ -186,7 +224,8 @@ const T &MyBSTree<T>::getMin() const throw(Oops)
   if (isEmpty())
     throw Oops(EMPTY_ERR);
 
-  return get_min_helper(m_root);
+  TreeNode<T> *min = get_min_helper(m_root);
+  return min->m_data;
 }
 
 template <class T>
@@ -205,6 +244,14 @@ void MyBSTree<T>::insert(const T &value)
   insert_helper(m_root, value);
   m_size++;
 
+  return;
+}
+
+template <class T>
+void MyBSTree<T>::remove(const T &value)
+{
+  m_root = remove_helper(m_root, value);
+  m_size--;
   return;
 }
 
