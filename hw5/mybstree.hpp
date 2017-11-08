@@ -87,10 +87,10 @@ TreeNode<T> *MyBSTree<T>::get_min_helper(TreeNode<T> *node) const
 }
 
 template <class T>
-const T &MyBSTree<T>::get_max_helper(TreeNode<T> *node) const
+TreeNode<T> *MyBSTree<T>::get_max_helper(TreeNode<T> *node) const
 {
   if (node->m_right == NULL)
-    return node->m_data;
+    return node;
 
   return get_max_helper(node->m_right);
 }
@@ -143,9 +143,12 @@ TreeNode<T>* MyBSTree<T>::remove_helper(TreeNode<T> *root, const T &value)
     }
     else // Both children
     {
-      TreeNode<T> *temp = get_min_helper(root->m_right);
+      // Swap nodes with minimum in right subtree
+      // TreeNode<T> *temp = get_min_helper(root->m_right);
+      // Swap nodes with maximum in left subtree
+      TreeNode<T> *temp = get_max_helper(root->m_left);
       root->m_data = temp->m_data;
-      root->m_right = remove_helper(root->m_right, temp->m_data);
+      root->m_left = remove_helper(root->m_left, temp->m_data);
     }
   }
 
@@ -215,7 +218,8 @@ const T &MyBSTree<T>::getMax() const throw(Oops)
   if (isEmpty())
     throw Oops(EMPTY_ERR);
 
-  return get_max_helper(m_root);
+  TreeNode<T> *max = get_max_helper(m_root);
+  return max->m_data;
 }
 
 template <class T>
