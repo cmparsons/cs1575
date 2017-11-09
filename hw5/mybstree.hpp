@@ -144,11 +144,9 @@ TreeNode<T>* MyBSTree<T>::remove_helper(TreeNode<T> *root, const T &value)
     else // Both children
     {
       // Swap nodes with minimum in right subtree
-      // TreeNode<T> *temp = get_min_helper(root->m_right);
-      // Swap nodes with maximum in left subtree
-      TreeNode<T> *temp = get_max_helper(root->m_left);
+      TreeNode<T> *temp = get_min_helper(root->m_right);
       root->m_data = temp->m_data;
-      root->m_left = remove_helper(root->m_left, temp->m_data);
+      root->m_right = remove_helper(root->m_right, temp->m_data);
     }
   }
 

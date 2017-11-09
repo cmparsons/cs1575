@@ -48,7 +48,6 @@ private:
   TreeNode<T> *get_min_helper(TreeNode<T> *node) const;
 
   // Recursive helper to find maximum value in BST.
-  // const T &get_max_helper(TreeNode<T> *node) const;
   TreeNode<T> *get_max_helper(TreeNode<T> *node) const;
 
   // Recurisve helper to print BST using a pre-order traversal.
