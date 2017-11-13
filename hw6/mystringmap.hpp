@@ -23,7 +23,7 @@ MyStringMap<T>::MyStringMap()
 {
   EMPTY = "-1";
   TOMB = "-2";
-  m_size = 0;
+  m_size = m_num_tomb = 0;
   m_max = 8;
   m_hash_table = new KVPair<T>[m_max];
   for (int i = 0; i < m_max; i++)
@@ -78,7 +78,7 @@ void MyStringMap<T>::clear()
 template <class T>
 int MyStringMap<T>::hash(const string &key) const
 {
-  unsigned int hash = 0;
+  long hash = 0;
   for (int i = 0; i < key.length(); i++)
     hash = 31 * hash + key[i];
 
