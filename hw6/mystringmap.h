@@ -42,11 +42,15 @@ public:
 
   string key() const { return m_key; }
 
-  T value() const { return m_val; }
+  const T &value() const { return m_val; }
 
   void set_key(const string &key) { m_key = key; }
 
   void set_value(const T &value) { m_val = value; }
+
+  // Search for key inside hash table.
+  // Returns position of key, if found. Otherwise, returns -1
+  int search(const string &key) const;
 };
 
 template <class T>
@@ -60,6 +64,8 @@ private:
   string EMPTY;
   string TOMB;
 
+  int m_num_tomb; // track number of tombstones--used for cleanup
+
   int hash(const string &key) const;
 
   int double_hash(const string &key, const int i) const
@@ -69,6 +75,12 @@ private:
 
   // Increase the size of the hash table and rehash records.
   void grow();
+
+  // Remove all tombstones within hash table. Set TOMB to EMPTY
+  void cleanup();
+
+  // Find position of key in the hash table. Returns -1 if key is not found.
+  int search(const string &key) const;
 
 public:
   MyStringMap();
@@ -84,6 +96,10 @@ public:
   bool isEmpty() const { return m_size == 0; }
 
   void insert(const string &key, const T &val);
+
+  const T &valueOf(const string &key) const throw(Oops);
+
+  void remove(const string &key);
 
   void print() const;
 };

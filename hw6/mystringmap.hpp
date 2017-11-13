@@ -16,6 +16,8 @@
 
 #include <string>
 
+const string KEY_NOT_FOUND = "Key Not Found !!";
+
 template <class T>
 MyStringMap<T>::MyStringMap()
 {
@@ -31,11 +33,11 @@ MyStringMap<T>::MyStringMap()
 template <class T>
 void MyStringMap<T>::grow()
 {
+  int home, pos, j;
   int old_max = m_max;
   m_max = (m_max << 1) + 1;
   KVPair<T> *new_hash_table = new KVPair<T>[m_max]();
   string key;
-  int home, pos, j;
 
   for (int i = 0; i < m_max; i++)
     new_hash_table[i].set_key(EMPTY);
@@ -125,6 +127,62 @@ void MyStringMap<T>::print() const
     if (key != EMPTY && key != TOMB)
       cout << "< " << key << ", " << m_hash_table[i].value() << " >" << endl;
   }
+  return;
+}
+
+template <class T>
+int MyStringMap<T>::search(const string &key) const
+{
+  int home;
+  int pos = home = hash(key);
+  int i = 1;
+
+  while (m_hash_table[pos].key() != EMPTY && m_hash_table[pos].key() != key)
+  {
+    pos = (home + double_hash(key, i)) % m_max;
+    i++;
+  }
+
+  return (m_hash_table[pos].key() == EMPTY ? -1 : pos);
+}
+
+template <class T>
+const T &MyStringMap<T>::valueOf(const string &key) const throw(Oops)
+{
+  int pos = search(key);
+
+  if (pos == -1)
+    throw Oops(KEY_NOT_FOUND);
+
+  return m_hash_table[pos].value();
+}
+
+template <class T>
+void MyStringMap<T>::remove(const string &key)
+{
+  int pos = search(key);
+
+  if (pos != -1)
+  {
+    m_hash_table[pos].set_key(TOMB);
+    m_size--;
+    m_num_tomb++;
+  }
+
+  // Clean up tombstones if too many accumulate
+  if (m_num_tomb >= 0.25 * m_max)
+    cleanup();
+
+  return;
+}
+template <class T>
+void MyStringMap<T>::cleanup()
+{
+  for (int i = 0; i < m_max; i++)
+    if (m_hash_table[i].key() == TOMB)
+      m_hash_table[i].set_key(EMPTY);
+
+  m_num_tomb = 0;
   return;
 }
 
