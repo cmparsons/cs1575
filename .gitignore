@@ -1,4 +1,4 @@
 *.out
 **/.vscode
-*.txt
-test.cpp
+**/*.txt
+**/test.cpp
