@@ -47,10 +47,6 @@ public:
   void set_key(const string &key) { m_key = key; }
 
   void set_value(const T &value) { m_val = value; }
-
-  // Search for key inside hash table.
-  // Returns position of key, if found. Otherwise, returns -1
-  int search(const string &key) const;
 };
 
 template <class T>
@@ -76,11 +72,14 @@ private:
   // Increase the size of the hash table and rehash records.
   void grow();
 
-  // Remove all tombstones within hash table. Set TOMB to EMPTY
+  // Remove all tombstones within hash table. Set TOMB to EMPTY. Rehash table;
   void cleanup();
 
   // Find position of key in the hash table. Returns -1 if key is not found.
   int search(const string &key) const;
+
+  // Rehash all records. Returns new hash table with records rehashed.
+  KVPair<T> *rehash(const KVPair<T> *ht, const int size);
 
 public:
   MyStringMap();

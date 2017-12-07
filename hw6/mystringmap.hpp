@@ -33,33 +33,9 @@ MyStringMap<T>::MyStringMap()
 template <class T>
 void MyStringMap<T>::grow()
 {
-  int home, pos, j;
   int old_max = m_max;
   m_max = (m_max << 1) + 1;
-  KVPair<T> *new_hash_table = new KVPair<T>[m_max]();
-  string key;
-
-  for (int i = 0; i < m_max; i++)
-    new_hash_table[i].set_key(EMPTY);
-
-  for (int i = 0; i < old_max; i++)
-  {
-    key = m_hash_table[i].key();
-
-    // Rehash records in new hash table
-    if (key != EMPTY && key != TOMB)
-    {
-      pos = home = hash(key);
-      j = 1;
-      while (new_hash_table[pos].key() != EMPTY)
-      {
-        pos = (home + double_hash(key, j)) % m_max;
-        j++;
-      }
-      KVPair<T> new_record(key, m_hash_table[i].value());
-      new_hash_table[pos] = new_record;
-    }
-  }
+  KVPair<T> *new_hash_table = rehash(m_hash_table, old_max);
 
   delete[] m_hash_table;
   m_hash_table = new_hash_table;
@@ -175,6 +151,7 @@ void MyStringMap<T>::remove(const string &key)
 
   return;
 }
+
 template <class T>
 void MyStringMap<T>::cleanup()
 {
@@ -182,8 +159,41 @@ void MyStringMap<T>::cleanup()
     if (m_hash_table[i].key() == TOMB)
       m_hash_table[i].set_key(EMPTY);
 
+  KVPair<T> *new_hash_table = rehash(m_hash_table, m_max);
+  delete[] m_hash_table;
+  m_hash_table = new_hash_table;
   m_num_tomb = 0;
   return;
+}
+
+template <class T>
+KVPair<T> *MyStringMap<T>::rehash(const KVPair<T> *ht, const int size)
+{
+  int home, pos, j;
+  KVPair<T> *new_ht = new KVPair<T>[m_max]();
+  string key;
+
+  for (int i = 0; i < m_max; i++)
+    new_ht[i].set_key(EMPTY);
+
+  for (int i = 0; i < size; i++)
+  {
+    key = ht[i].key();
+
+    if (key != EMPTY)
+    {
+      pos = home = hash(key);
+      j = 1;
+      while (new_ht[pos].key() != EMPTY)
+      {
+        pos = (home + double_hash(key, j)) % m_max;
+        j++;
+      }
+      KVPair<T> new_record(key, ht[i].value());
+      new_ht[pos] = new_record;
+    }
+  }
+  return new_ht;
 }
 
 #endif
