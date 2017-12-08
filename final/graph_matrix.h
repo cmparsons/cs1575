@@ -4,12 +4,21 @@
 #define UNVISITED false
 #define VISITED true
 
+using std::string;
+
+struct Vertex
+{
+  string name;
+  int val;
+};
+
 class GraphMatrix
 {
 private:
   int m_num_vertex, m_num_edge;
   int **m_matrix;
   bool *m_mark;
+  Vertex *m_verts;
 
 public:
   GraphMatrix(const int size);
@@ -35,6 +44,12 @@ public:
   int get_mark(int vertex) const { return m_mark[vertex]; }
 
   void set_mark(int vertex, bool val) { m_mark[vertex] = val; }
+
+  int get_index_vertex(const string key) const;
+
+  int add_vertex(const string key, const int val = 0);
+
+  Vertex *get_verts() { return m_verts; }
 };
 
 #include "graph_matrix.hpp"

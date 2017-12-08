@@ -1,17 +1,21 @@
 #ifndef GRAPH_MATRIX_HPP
 #define GRAPH_MATRIX_HPP
 
-#include "graph_matrix.h"
+#include <iostream>
+using namespace std;
 
 GraphMatrix::GraphMatrix(const int size)
 {
   m_num_vertex = size;
   m_num_edge = 0;
   m_mark = new bool[size];
+  m_verts = new Vertex[size];
 
   for (int i = 0; i < m_num_vertex; i++)
   {
     m_mark[i] = UNVISITED;
+    m_verts[i].name = "";
+    m_verts[i].val = 0;
   }
 
   m_matrix = new int *[m_num_vertex];
@@ -33,6 +37,7 @@ GraphMatrix::GraphMatrix(const int size)
 GraphMatrix::~GraphMatrix()
 {
   delete[] m_mark;
+  delete[] m_verts;
 
   for (int i = 0; i < m_num_vertex; i++)
   {
@@ -46,9 +51,7 @@ int GraphMatrix::first(const int vertex) const
   for (int i = 0; i < m_num_vertex; i++)
   {
     if (m_matrix[vertex][i] != 0)
-    {
       return i;
-    }
   }
   return m_num_vertex;
 }
@@ -79,6 +82,30 @@ void GraphMatrix::del_edge(int v1, int v2)
 
   m_matrix[v1][v2] = 0;
   return;
+}
+
+int GraphMatrix::get_index_vertex(const string key) const
+{
+  for (int i = 0; i < m_num_vertex; i++)
+  {
+    if (key == m_verts[i].name)
+      return i;
+  }
+  return m_num_vertex; // key not found
+}
+
+int GraphMatrix::add_vertex(const string key, const int val)
+{
+  for (int i = 0; i < m_num_vertex; i++)
+  {
+    if (key == m_verts[i].name || m_verts[i].name == "")
+    {
+      m_verts[i].name = key;
+      m_verts[i].val = val;
+      return i;
+    }
+  }
+  return m_num_vertex - 1; // This should never happen
 }
 
 #endif
