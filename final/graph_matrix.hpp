@@ -1,9 +1,6 @@
 #ifndef GRAPH_MATRIX_HPP
 #define GRAPH_MATRIX_HPP
 
-#include <iostream>
-using namespace std;
-
 GraphMatrix::GraphMatrix(const int size)
 {
   m_num_vertex = size;
@@ -56,9 +53,9 @@ int GraphMatrix::first(const int vertex) const
   return m_num_vertex;
 }
 
-int GraphMatrix::next(const int vertex, const int weight) const
+int GraphMatrix::next(const int vertex, const int current) const
 {
-  for (int i = weight + 1; i < m_num_vertex; i++)
+  for (int i = current + 1; i < m_num_vertex; i++)
   {
     if (m_matrix[vertex][i] != 0)
       return i;

@@ -4,6 +4,7 @@
 #define UNVISITED false
 #define VISITED true
 
+#include <string>
 using std::string;
 
 struct Vertex
@@ -50,6 +51,9 @@ public:
   int add_vertex(const string key, const int val = 0);
 
   Vertex *get_verts() { return m_verts; }
+
+  Vertex vertex(const int v) const  { return m_verts[v]; }
+
 };
 
 #include "graph_matrix.hpp"
