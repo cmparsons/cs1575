@@ -24,7 +24,10 @@ int main()
     create_graph(city, num_locations);
     Results results = dijkstra(city, START, END);
 
-    cout << "#" << i + 1 << " : " << city_name << ", " << results.path_cost << " tokens, " << results.trash_cans << " snacks." << endl;
+    if (results.path_cost == INFINITY && results.trash_cans == 0)
+      cout << "No path found" << endl;
+    else
+      cout << "#" << i + 1 << " : " << city_name << ", " << results.path_cost << " tokens, " << results.trash_cans << " snacks." << endl;
   }
 
   return 0;
@@ -121,6 +124,8 @@ Results dijkstra(GraphMatrix &G, const string start, const string end)
     for (int j = G.first(vertex); j < num_verts; j = G.next(vertex, j))
     {
       int new_distance = distances[vertex] + G.weight(vertex, j);
+
+      // If path cost is equal, update route with path that gets more trash cans
       if (distances[j] == new_distance)
       {
         int old_path_trash_cans = get_total_trash_cans(G, verts, parents, 0, j);
@@ -131,7 +136,7 @@ Results dijkstra(GraphMatrix &G, const string start, const string end)
           distances[j] = distances[vertex] + G.weight(vertex, j);
           temp.distance = distances[j];
           temp.vertex = j;
-          parents[j] = vertex; // Update with faster route
+          parents[j] = vertex; // Update with path that visits more trashcans
 
           unvisited.push(temp); // Insert new distance in heap
         }
@@ -152,14 +157,12 @@ Results dijkstra(GraphMatrix &G, const string start, const string end)
   int total_trash_cans = get_total_trash_cans(G, verts, parents, 0, end_idx);
   int total_cost = get_path_cost(G, parents, 0, parents[end_idx], end_idx);
 
-  Results results(total_trash_cans, total_cost);
-
   delete[] distances;
   delete[] parents;
   distances = NULL;
   parents = NULL;
 
-  return results;
+  return Results(total_trash_cans, total_cost);
 }
 
 int get_total_trash_cans(GraphMatrix &G, Vertex *const verts, int *const parents, int total_trash_cans, int idx)
@@ -173,11 +176,9 @@ int get_total_trash_cans(GraphMatrix &G, Vertex *const verts, int *const parents
 
 int get_path_cost(GraphMatrix &G, int *const parents, int path_cost, int parent_idx, int idx)
 {
+  // Reached Start vertex
   if (parent_idx == -1)
-  {
-    int source_idx = G.get_index_vertex(START);
-    return path_cost + G.weight(source_idx, idx);
-  }
+    return path_cost;
 
   return get_path_cost(G, parents, path_cost + G.weight(parent_idx, idx), parents[parent_idx], parent_idx);
 }
